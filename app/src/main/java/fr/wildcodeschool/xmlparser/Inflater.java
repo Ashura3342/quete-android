@@ -3,6 +3,7 @@ package fr.wildcodeschool.xmlparser;
 import android.content.Context;
 import android.util.Xml;
 import android.view.ViewGroup;
+import android.widget.Space;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -11,8 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import fr.wildcodeschool.xmlparser.wildView.WildButton;
+import fr.wildcodeschool.xmlparser.wildView.WildCheckBox;
 import fr.wildcodeschool.xmlparser.wildView.WildEditText;
 import fr.wildcodeschool.xmlparser.wildView.WildLinearLayout;
+import fr.wildcodeschool.xmlparser.wildView.WildSpace;
+import fr.wildcodeschool.xmlparser.wildView.WildTextView;
 
 public class Inflater {
   // Activity context
@@ -29,7 +33,7 @@ public class Inflater {
    * @throws IOException
    * @throws XmlPullParserException
    */
-  public void inflate(ViewGroup pParent) throw IOException, XmlPullParserException {
+  public void inflate(ViewGroup pParent) throws IOException, XmlPullParserException {
     // Store the parent
     ViewGroup lParentView = pParent;
 
@@ -47,29 +51,41 @@ public class Inflater {
       if(eventType == XmlPullParser.START_TAG) {
         switch (parser.getName()) {
           case "LinearLayout":
-            WildLinearLayout lLayout = new WildLinearLayout(ctx);
-            lLayout.parseXmlNode(parser);
+            WildLinearLayout lLayout = new WildLinearLayout.Builder(ctx)
+                    .parseXmlNode(parser)
+                    .build();
             lParentView.addView(lLayout);
             lParentView = lLayout;
             break;
           case "EditText":
-            WildEditText lEditText = new WildEditText(ctx);
-            lEditText.parseXmlNode(parser);
+            WildEditText lEditText = new WildEditText.Builder(ctx)
+                    .parseXmlNode(parser)
+                    .build();
             lParentView.addView(lEditText);
             break;
           case "Button":
-            WildButton lButton = new WildButton(ctx);
-            lButton.parseXmlNode(parser);
+            WildButton lButton = new WildButton.Builder(ctx)
+                    .parseXmlNode(parser)
+                    .build();
             lParentView.addView(lButton);
             break;
           case "TextView":
-            // TODO - Add WildTextView
+            WildTextView lTextView = new WildTextView.Builder(ctx)
+                    .parseXmlNode(parser)
+                    .build();
+            lParentView.addView(lTextView);
             break;
           case "CheckBox":
-            // TODO - Add WildCheckBox
+            WildCheckBox lCheckBox = new WildCheckBox.Builder(ctx)
+                    .parseXmlNode(parser)
+                    .build();
+            lParentView.addView(lCheckBox);
             break;
           case "Space":
-            // TODO - Add WildSpace
+              WildSpace lSpaceView = new WildSpace.Builder(ctx)
+                      .parseXmlNode(parser)
+                      .build();
+              lParentView.addView(lSpaceView);
             break;
           default:
             break;
