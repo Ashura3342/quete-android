@@ -65,7 +65,7 @@ public class ViewBuilder<B extends ViewBuilder, V extends View>
     }
 
 
-    private void setPaddingHorizontal(String value) {
+    public void setPaddingHorizontal(String value) {
         UnitValue paddingHorizontal = UnitValue.valueOf(value);
         if (paddingHorizontal != null) {
             int lPaddingHorizontal = (int) paddingHorizontal.toPixel(this.object.getContext());
@@ -77,7 +77,7 @@ public class ViewBuilder<B extends ViewBuilder, V extends View>
         }
     }
 
-    private void setPaddingVertical(String value) {
+    public void setPaddingVertical(String value) {
         UnitValue paddingVertical = UnitValue.valueOf(value);
         if (paddingVertical != null) {
             int lPaddingVertical =(int) paddingVertical.toPixel(this.object.getContext());
@@ -89,11 +89,11 @@ public class ViewBuilder<B extends ViewBuilder, V extends View>
         }
     }
 
-    protected void setId(String value) {
+    public void setId(String value) {
         // doing nothing
     }
 
-    private void setBackgroundColor(String value) {
+    public void setBackgroundColor(String value) {
         this.object.setBackgroundColor(Color.parseColor(value));
     }
 
