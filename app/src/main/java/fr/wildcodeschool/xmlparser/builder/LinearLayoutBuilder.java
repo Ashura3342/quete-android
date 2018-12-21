@@ -22,7 +22,7 @@ public class LinearLayoutBuilder <B extends LinearLayoutBuilder, V extends Linea
         super(object, tag);
         this.commandMap.put("android:orientation", this::setOrientation);
         this.commandMap.put("android:weightSum", this::setWeightSum);
-        this.commandMap.put("android:gravity", this::setGravity);
+        this.commandMap.put("android:gravity", this::setLayoutGravity);
     }
 
     public void setOrientation(String value) {
@@ -37,7 +37,7 @@ public class LinearLayoutBuilder <B extends LinearLayoutBuilder, V extends Linea
         this.object.setWeightSum(Float.parseFloat(value));
     }
 
-    public void setGravity(String value) {
+    public void setLayoutGravity(String value) {
         Integer gravity = GravityReflect.stringAsGravity(value);
         if (gravity != null) {
             this.object.setGravity(gravity);

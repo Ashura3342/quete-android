@@ -14,7 +14,7 @@ public class TextViewBuilder<B extends TextViewBuilder, V extends TextView>
         this.commandMap.put("android:textColor", this::setTextColor);
         this.commandMap.put("android:textSize", this::setTextSize);
         this.commandMap.put("android:text", this::setText);
-        this.commandMap.put("android:gravity", this::setGravity);
+        this.commandMap.put("android:gravity", this::setLayoutGravity);
     }
 
     protected void setEms(String value) {
