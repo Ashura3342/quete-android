@@ -28,8 +28,8 @@ public class ViewBuilder<B extends ViewBuilder, V extends View>
         layoutSizeParam.put("wrap_content", LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    public ViewBuilder(V object, String tag) {
-        super(object);
+    public ViewBuilder(V view, String tag) {
+        super(view);
         this.TAG = tag;
         this.commandMap = new HashMap<>();
         this.commandMap.put("android:id", this::setId);

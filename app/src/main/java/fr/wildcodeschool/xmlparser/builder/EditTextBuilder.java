@@ -16,8 +16,8 @@ public class EditTextBuilder<B extends EditTextBuilder, V extends EditText>
         inputTypeMap.put("textPersonName", InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
     }
 
-    public EditTextBuilder(V textView, String TAG) {
-        super(textView, TAG);
+    public EditTextBuilder(V view, String TAG) {
+        super(view, TAG);
         this.commandMap.put("android:inputType", this::setInputType);
         this.commandMap.put("android:hint", this::setHint);
     }

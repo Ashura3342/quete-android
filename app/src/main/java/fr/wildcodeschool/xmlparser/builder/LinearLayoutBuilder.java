@@ -18,8 +18,8 @@ public class LinearLayoutBuilder <B extends LinearLayoutBuilder, V extends Linea
         orientationType.put("vertical", LinearLayout.VERTICAL);
     }
 
-    public LinearLayoutBuilder(V object, String tag) {
-        super(object, tag);
+    public LinearLayoutBuilder(V view, String tag) {
+        super(view, tag);
         this.commandMap.put("android:orientation", this::setOrientation);
         this.commandMap.put("android:weightSum", this::setWeightSum);
         this.commandMap.put("android:gravity", this::setLayoutGravity);

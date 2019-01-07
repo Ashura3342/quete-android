@@ -8,8 +8,8 @@ import fr.wildcodeschool.xmlparser.UnitValue;
 public class TextViewBuilder<B extends TextViewBuilder, V extends TextView>
         extends ViewBuilder<B, V> {
 
-    public TextViewBuilder(V textView, String TAG) {
-        super(textView, TAG);
+    public TextViewBuilder(V view, String TAG) {
+        super(view, TAG);
         this.commandMap.put("android:ems", this::setEms);
         this.commandMap.put("android:textColor", this::setTextColor);
         this.commandMap.put("android:textSize", this::setTextSize);
