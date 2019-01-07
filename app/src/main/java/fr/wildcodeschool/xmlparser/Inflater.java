@@ -88,12 +88,11 @@ public class Inflater {
         Class<? extends ViewBuilder> classBuilder = builderMap.get(parser.getName());
         if (classBuilder != null) {
             try {
-                View view = (View) classBuilder
+                return (View) classBuilder
                         .getDeclaredConstructor(Context.class)
                         .newInstance(ctx)
                         .parseXmlNode(parser)
                         .build();
-                return view;
             } catch (IllegalAccessException |
                     NoSuchMethodException |
                     InstantiationException |
