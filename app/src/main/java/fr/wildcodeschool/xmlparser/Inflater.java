@@ -2,25 +2,39 @@ package fr.wildcodeschool.xmlparser;
 
 import android.content.Context;
 import android.util.Xml;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Space;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
+import fr.wildcodeschool.xmlparser.builder.ViewBuilder;
 import fr.wildcodeschool.xmlparser.wildView.WildButton;
-import fr.wildcodeschool.xmlparser.wildView.WildCheckBox;
 import fr.wildcodeschool.xmlparser.wildView.WildEditText;
 import fr.wildcodeschool.xmlparser.wildView.WildLinearLayout;
-import fr.wildcodeschool.xmlparser.wildView.WildSpace;
 import fr.wildcodeschool.xmlparser.wildView.WildTextView;
 
 public class Inflater {
   // Activity context
   private Context ctx;
+
+    private static Map<String, Class<? extends ViewBuilder>> builderMap
+            = new HashMap<>();
+
+    static {
+        builderMap.put("LinearLayout", WildLinearLayout.Builder.class);
+        builderMap.put("EditText", WildEditText.Builder.class);
+        builderMap.put("Button", WildButton.Builder.class);
+        builderMap.put("TextView", WildTextView.Builder.class);
+        builderMap.put("CheckBox", WildTextView.Builder.class);
+        builderMap.put("Space", WildTextView.Builder.class);
+    }
 
   // Constructor should only contains initialisation
   Inflater(Context ctx) {
@@ -49,46 +63,11 @@ public class Inflater {
     int eventType = parser.getEventType();
     while (eventType != XmlPullParser.END_DOCUMENT) {
       if(eventType == XmlPullParser.START_TAG) {
-        switch (parser.getName()) {
-          case "LinearLayout":
-            WildLinearLayout lLayout = new WildLinearLayout.Builder(ctx)
-                    .parseXmlNode(parser)
-                    .build();
-            lParentView.addView(lLayout);
-            lParentView = lLayout;
-            break;
-          case "EditText":
-            WildEditText lEditText = new WildEditText.Builder(ctx)
-                    .parseXmlNode(parser)
-                    .build();
-            lParentView.addView(lEditText);
-            break;
-          case "Button":
-            WildButton lButton = new WildButton.Builder(ctx)
-                    .parseXmlNode(parser)
-                    .build();
-            lParentView.addView(lButton);
-            break;
-          case "TextView":
-            WildTextView lTextView = new WildTextView.Builder(ctx)
-                    .parseXmlNode(parser)
-                    .build();
-            lParentView.addView(lTextView);
-            break;
-          case "CheckBox":
-            WildCheckBox lCheckBox = new WildCheckBox.Builder(ctx)
-                    .parseXmlNode(parser)
-                    .build();
-            lParentView.addView(lCheckBox);
-            break;
-          case "Space":
-              WildSpace lSpaceView = new WildSpace.Builder(ctx)
-                      .parseXmlNode(parser)
-                      .build();
-              lParentView.addView(lSpaceView);
-            break;
-          default:
-            break;
+          View view = createView(parser);
+          if (view != null) {
+              lParentView.addView(view);
+              if (view instanceof WildLinearLayout)
+                  lParentView = (WildLinearLayout) view;
         }
       }
       else if (eventType == XmlPullParser.END_TAG) {
@@ -104,4 +83,22 @@ public class Inflater {
       eventType = parser.getEventType();
     }
   }
+
+    private View createView(XmlPullParser parser) {
+        Class<? extends ViewBuilder> classBuilder = builderMap.get(parser.getName());
+        if (classBuilder != null) {
+            try {
+                View view = (View) classBuilder.getDeclaredConstructor(Context.class).newInstance(ctx)
+                        .parseXmlNode(parser)
+                        .build();
+                return view;
+            } catch (IllegalAccessException |
+                    NoSuchMethodException |
+                    InstantiationException |
+                    InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
